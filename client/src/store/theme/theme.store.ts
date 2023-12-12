@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 export type ThemeStoreType = {
   currentTheme: string;
-  displayThemeHandler: (item: string) => void;
+  displayThemeHandler: (theme: string) => void;
 };
 
 const initialThemeState = localStorage.getItem('theme') || 'light';
@@ -13,8 +13,8 @@ const initialThemeState = localStorage.getItem('theme') || 'light';
 export const useThemeStore = () => {
   const [currentTheme, setCurrentTheme] = useState<string>(initialThemeState);
 
-  const displayThemeHandler = (item: string) => {
-    setCurrentTheme(item);
+  const displayThemeHandler = (theme: string) => {
+    setCurrentTheme(theme);
   };
 
   useEffect(() => {
