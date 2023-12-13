@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 /* eslint-disable @typescript-eslint/ban-types */
 
 /**
- * ### ComponentPropsType
+ * ### CustomPropsType
  * A default component props type.
  * 
  * - Used to avoid `repetition` of declaring props `type` on each component.
@@ -23,7 +23,7 @@ import { ReactNode } from 'react';
 
  * ```
  */
-declare type ComponentPropsType<T = {}> = {
+declare type CustomPropsType<T = {}> = {
   className?: string;
   children?: ReactNode;
 } & T;
