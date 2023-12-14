@@ -7,7 +7,7 @@ import { RootLayout } from '@project/components';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RootLayout />,
+    element: <RootLayout hasFooter />,
     errorElement: <ErrorPage />,
     children: [
       {
