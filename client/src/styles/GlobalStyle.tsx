@@ -12,6 +12,11 @@ const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.backgroundColor}
   }
 
+  main, footer {
+    max-width: 1440px;
+    margin: auto;
+  }
+
   h1 {
     font-size: 42px;
   }
