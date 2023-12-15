@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import type { CustomPropsType } from '@project/types';
-
 import { Footer } from '@project/components';
 
 export type RootLayoutProps = {
@@ -13,9 +11,7 @@ export type RootLayoutProps = {
  * ### RootLayout component
  * A default layout component
  */
-const RootLayout: React.FC<CustomPropsType<RootLayoutProps>> = ({
-  hasFooter = false,
-}) => {
+const RootLayout: React.FC<RootLayoutProps> = ({ hasFooter = false }) => {
   return (
     <Fragment>
       <main className="main-content">
