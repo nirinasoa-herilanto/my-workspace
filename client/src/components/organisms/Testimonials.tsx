@@ -26,7 +26,9 @@ const Testimonials: React.FC<TestimonialsProps> = ({ className, reviews }) => {
 
 const TestimonialsWrapper = styled.section`
   &.testimonials {
-    padding: 20px;
+    & {
+      padding: 50px;
+    }
 
     & h1 {
       text-align: center;
@@ -35,12 +37,6 @@ const TestimonialsWrapper = styled.section`
     .testimonials-p {
       font-size: 20px;
       text-align: center;
-    }
-
-    @media (min-width: 1024px) {
-      & {
-        padding: 52px;
-      }
     }
   }
 `;

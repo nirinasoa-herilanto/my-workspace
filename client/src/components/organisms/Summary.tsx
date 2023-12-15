@@ -31,29 +31,44 @@ const Summary: React.FC<SummaryProps> = ({ className }) => {
 
 const SummaryWrapper = styled.section`
   &.summary {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    & {
+      padding: 50px;
+
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
 
     & p {
-      width: 580px;
-      height: auto;
-
-      font-size: 22px;
+      font-size: 20px;
       font-weight: bold;
       text-align: center;
     }
 
     .summary__image {
-      width: 620px;
+      width: 100%;
       height: inherit;
     }
 
-    @media (min-width: 1024px) {
+    @media (min-width: 768px) {
       & {
-        padding: 52px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
       }
+
+      & p {
+        max-width: 482px;
+      }
+
+      .summary__image {
+        width: 500px;
+        height: inherit;
+      }
+    }
+
+    @media (min-width: 1024px) {
     }
   }
 `;

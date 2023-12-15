@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import type { CustomPropsType } from '@project/types';
 
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { HTMLMotionProps, motion } from 'framer-motion';
 
 export type ImagePropsType = {
+  className?: string;
   src: string;
   alt: string;
 } & HTMLMotionProps<'div'>;
@@ -14,12 +14,7 @@ export type ImagePropsType = {
  * Use to display a custom lazy image component on the UI
  * - We can enable `motion style` by passing it through `props`
  */
-const Image: React.FC<CustomPropsType<ImagePropsType>> = ({
-  className,
-  src,
-  alt,
-  ...rest
-}) => {
+const Image: React.FC<ImagePropsType> = ({ className, src, alt, ...rest }) => {
   return (
     <ImageWrapper className={`custom-image ${className || ''}`} {...rest}>
       <LazyLoadImage

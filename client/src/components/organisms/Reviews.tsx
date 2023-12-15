@@ -45,7 +45,12 @@ const Reviews: React.FC<ReviewsProps> = ({ className, data }) => {
         animate="visible"
       >
         {data.map((review) => (
-          <ReviewItem key={review._id} review={review} variants={item} />
+          <ReviewItem
+            className="review"
+            key={review._id}
+            review={review}
+            variants={item}
+          />
         ))}
       </motion.ul>
     </ReviewsWrapper>
@@ -54,11 +59,38 @@ const Reviews: React.FC<ReviewsProps> = ({ className, data }) => {
 
 const ReviewsWrapper = styled.div`
   &.reviews {
-    & ul {
+    .container {
       margin-top: 50px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
       gap: 50px;
+    }
+
+    @media (min-width: 768px) {
+      .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 50px;
+      }
+
+      .review:nth-child(3) {
+        display: none;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .container {
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 50px;
+      }
+
+      .review:nth-child(3) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
     }
   }
 `;

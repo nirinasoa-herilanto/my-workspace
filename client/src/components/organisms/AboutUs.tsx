@@ -5,6 +5,8 @@ import { assets } from '@project/assets';
 
 import { wordingConfig } from '@project/config';
 
+import { truncate } from '@project/utils';
+
 import { Image, Button } from '@project/components';
 
 export type AboutUsProps = {
@@ -20,7 +22,7 @@ const AboutUs: React.FC<AboutUsProps> = ({ className }) => {
       <div className="about-us__card">
         <img src={assets.growth} alt="growth icon" />
         <h2>Let's growth together</h2>
-        <p>{wordingConfig.aboutUs}</p>
+        <p>{truncate(wordingConfig.aboutUs, 220)}</p>
 
         <Button
           className="about-us__card--btn"
@@ -38,23 +40,19 @@ const AboutUs: React.FC<AboutUsProps> = ({ className }) => {
 
 const AboutUsWrapper = styled.section`
   &.about-us {
-    padding: 20px;
+    & {
+      padding: 50px;
 
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
-    gap: 20px;
+      display: grid;
+      gap: 50px;
 
-    background-color: #f0f9ff;
+      background-color: #f0f9ff;
+    }
 
     .about-us__card {
-      width: 350px;
-      height: auto;
-
       padding: 28px;
-      background: var(--white);
       border-radius: 20px;
+      background: var(--white);
     }
 
     .about-us__card img {
@@ -67,12 +65,52 @@ const AboutUsWrapper = styled.section`
 
     .about-us__card--btn {
       width: 150px;
+      margin-top: 12px;
+    }
+
+    .about-us__image {
+      width: 100%;
+      height: inherit;
+    }
+
+    @media (min-width: 768px) {
+      & {
+        display: grid;
+        grid-template-columns: 332px auto;
+        align-items: center;
+      }
+
+      .about-us__card h2 {
+        font-size: 28px;
+      }
+      .about-us__card p {
+        font-size: 14px;
+      }
     }
 
     @media (min-width: 1024px) {
       & {
-        margin-top: 52px;
-        padding: 52px;
+        display: grid;
+        grid-template-columns: 392px auto;
+        justify-items: center;
+        align-items: center;
+      }
+
+      .about-us__card {
+        max-width: 500px;
+        padding: 32px;
+      }
+
+      .about-us__card h2 {
+        font-size: 32px;
+      }
+      .about-us__card p {
+        font-size: 16px;
+      }
+
+      .about-us__image {
+        max-width: 500px;
+        height: 500px;
       }
     }
   }

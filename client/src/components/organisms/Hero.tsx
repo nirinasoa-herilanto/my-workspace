@@ -16,9 +16,10 @@ export type HeroProps = {
 const Hero: React.FC<HeroProps> = ({ className }) => {
   return (
     <HeroWrapper className={`hero ${className || ''}`}>
-      <div className="hero__description">
+      <div className="hero-content">
         <Logo />
-        <div className="hero-content">
+
+        <div className="hero-content__description">
           <h1>Your new future workspace</h1>
           <p>Let's grow together</p>
 
@@ -42,25 +43,25 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
 
 const HeroWrapper = styled.section`
   &.hero {
-    padding: 20px;
+    & {
+      padding: 50px;
 
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+    }
 
-    .hero__description {
-      max-width: 38%;
+    .hero-content {
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .hero-content h1 {
+    .hero-content__description h1 {
       margin: 0;
-      font-size: 72px;
+      font-size: 52px;
     }
-    .hero-content p {
+    .hero-content__description p {
       font-size: 22px;
     }
 
@@ -73,17 +74,46 @@ const HeroWrapper = styled.section`
       width: 180px;
     }
 
+    @media (min-width: 768px) {
+      & {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .hero__image {
+        width: 100%;
+        height: inherit;
+      }
+    }
+
     @media (min-width: 1024px) {
       & {
-        padding: 52px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
       }
 
       .hero-content {
-        margin-left: 50px;
+        max-width: 38%;
+      }
+      .hero-content__description {
+        /* margin-left: 50px; */
+      }
+
+      .hero-content__description h1 {
+        margin: 0;
+        font-size: 68px;
       }
 
       .hero-action {
         margin-top: 28px;
+      }
+
+      .hero__image {
+        width: 500px;
+        height: inherit;
       }
     }
   }

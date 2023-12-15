@@ -15,8 +15,12 @@ export type FooterProps = {
 const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
     <FooterWrapper className={`footer ${className || ''}`}>
-      <div className="footer__content">
-        <Image src={assets.contactUs} alt="contact us" />
+      <div className="footer-content">
+        <Image
+          className="footer-content__image"
+          src={assets.contactUs}
+          alt="contact us"
+        />
         <div className="footer-info">
           <h1>Contact us</h1>
           <FooterNav className="footer-link" />
@@ -32,14 +36,14 @@ const Footer: React.FC<FooterProps> = ({ className }) => {
 
 const FooterWrapper = styled.footer`
   &.footer {
-    padding: 20px;
+    & {
+      padding: 50px;
+    }
 
-    .footer__content {
+    .footer-content {
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
+      flex-direction: column;
+      gap: 50px;
     }
 
     .footer-link {
@@ -55,14 +59,31 @@ const FooterWrapper = styled.footer`
       font-weight: bold;
     }
 
-    @media (min-width: 1024px) {
-      & {
-        padding: 52px;
+    @media (min-width: 768px) {
+      .footer-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
       }
 
-      /* .footer__content {
-        margin-right: 52px;
-      } */
+      .footer-content__image {
+        width: 375px;
+        height: inherit;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .footer-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .footer-content__image {
+        width: 482px;
+        height: inherit;
+      }
     }
   }
 `;
