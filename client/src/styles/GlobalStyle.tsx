@@ -12,9 +12,42 @@ const GlobalStyle = createGlobalStyle`
     background: ${({ theme }) => theme.backgroundColor}
   }
 
-  h1, li, p, span {
+  main, footer {
+    max-width: 1440px;
+    margin: auto;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 28px;
+  }
+
+  a {
+    color: var(--blue-600);
+    text-decoration: none;
+  }
+
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  h1, h2, h3, li, p, span, a {
     color: ${({ theme }) => theme.textColor};
   }
+
+  a, li, p, span {
+    font-size: 16px;
+  }
+
+
 `;
 
 export default GlobalStyle;

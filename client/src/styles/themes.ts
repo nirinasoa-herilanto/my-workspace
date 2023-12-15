@@ -7,7 +7,7 @@ export const lightMode = {
 };
 
 export const darkMode = {
-  backgroundColor: '#37383d',
-  textColor: '#fafafa',
+  backgroundColor: '#020617',
+  textColor: '#cbd5e1',
   overlay: 'rgba(255, 255, 255, 0.4)',
 };
