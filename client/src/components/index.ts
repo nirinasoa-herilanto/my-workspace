@@ -1,3 +1,6 @@
+export { default as ProtectedRoute } from './routes/ProtectedRoute';
+export { default as PublicRoute } from './routes/PublicRoute';
+
 // Layout components
 export { default as RootLayout } from './layouts/RootLayout';
 
@@ -10,6 +13,7 @@ export { default as Logo } from './atoms/Logo';
 export { default as ReviewItem } from './molecules/ReviewItem';
 export { default as FooterNav } from './molecules/FooterNav';
 export { default as CustomLink } from './molecules/CustomLink';
+export { default as Redirection } from './molecules/Redirection';
 
 // Organisms components
 export { default as Hero } from './organisms/Hero';
