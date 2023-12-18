@@ -1,8 +1,14 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import { Homepage, ErrorPage } from '@project/pages';
+import {
+  Homepage,
+  ErrorPage,
+  WorkspacePage,
+  CompleteRegistrationPage,
+  AuthPage,
+} from '@project/pages';
 
-import { RootLayout } from '@project/components';
+import { RootLayout, ProtectedRoute } from '@project/components';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +19,27 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Homepage />,
+      },
+      {
+        path: 'auth',
+        index: true,
+        element: <AuthPage />,
+      },
+      {
+        path: 'complete-registration',
+        index: true,
+        element: <CompleteRegistrationPage />,
+      },
+    ],
+  },
+  {
+    path: '/workspace',
+    element: <ProtectedRoute />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <WorkspacePage />,
       },
     ],
   },
