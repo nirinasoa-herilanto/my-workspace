@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { ThemeStoreType, useThemeStore } from './theme/theme.store';
+import { AuthStoreType, useAuthStore } from './auth/auth.store';
 
 export type AppStoreProviderProps = {
   children: React.ReactNode;
@@ -7,6 +9,7 @@ export type AppStoreProviderProps = {
 
 export interface IAppContext {
   theme: ThemeStoreType;
+  auth: AuthStoreType;
 }
 
 /**
@@ -20,9 +23,11 @@ export const AppStoreContext = React.createContext({} as IAppContext);
 const AppStoreProvider: React.FC<AppStoreProviderProps> = React.memo(
   ({ children, ...rest }) => {
     const theme = useThemeStore();
+    const auth = useAuthStore();
 
     const value = {
       theme,
+      auth,
     } as IAppContext;
 
     return (
