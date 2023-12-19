@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import { assets } from '@project/assets';
 
@@ -17,6 +18,12 @@ export type AboutUsProps = {
  * ### AboutUs component
  */
 const AboutUs: React.FC<AboutUsProps> = ({ className }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/auth?tab=login');
+  };
+
   return (
     <AboutUsWrapper className={`about-us ${className || ''}`}>
       <div className="about-us__card">
@@ -28,6 +35,7 @@ const AboutUs: React.FC<AboutUsProps> = ({ className }) => {
           className="about-us__card--btn"
           whileTap={{ scale: 1.05 }}
           transition={{ type: 'spring', stiffness: 500 }}
+          onClick={handleClick}
         >
           Log in
         </Button>

@@ -42,6 +42,9 @@ const reviews: IReview[] = [
   },
 ];
 
+/**
+ * ## Homepage
+ */
 const Homepage = () => {
   return (
     <Fragment>

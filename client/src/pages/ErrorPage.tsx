@@ -5,6 +5,9 @@ export type ErrorPageProps = {
   message?: string;
 };
 
+/**
+ * ## Error page
+ */
 const ErrorPage: React.FC<ErrorPageProps> = ({ message }) => {
   return (
     <ErrorWrapper className="error-page">
