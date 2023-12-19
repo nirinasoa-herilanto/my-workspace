@@ -63,7 +63,9 @@ export class FirebaseAuthApp {
 
       window.localStorage.removeItem('emailForSignIn');
 
-      // if (!user.emailVerified) return; // only google mail account
+      if (!user.emailVerified) {
+        throw new Error('Please use a valid email 😉');
+      }
 
       await updatePassword(user, password);
 

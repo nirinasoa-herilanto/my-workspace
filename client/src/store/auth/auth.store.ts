@@ -10,7 +10,10 @@ export type AuthStoreType = {
   user: User | null;
   logout: () => Promise<void>;
   sendSignupLinkTo: (email: string) => Promise<void>;
-  signupWithEmailAndPassword: (password: string) => Promise<void>;
+  signupWithEmailAndPassword: (
+    email: string,
+    password: string
+  ) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   loginWithEmailAndPassword: (email: string, password: string) => Promise<void>;
 };
@@ -30,6 +33,9 @@ export const useAuthStore = () => {
     await firebaseAuthApp.sendSignupLinkToUser(email);
   };
 
+  /**
+   * Use to signup with email and password
+   */
   const signupWithEmailAndPassword = async (password: string) => {
     const user = await firebaseAuthApp.signupWithEmailAndPassword(password);
     user && setUser(user);
@@ -60,7 +66,7 @@ export const useAuthStore = () => {
   const logout = async () => {
     await firebaseAuthApp.logout();
     localStorage.removeItem('accessToken');
-    redirect('/');
+    setUser(null);
   };
 
   useEffect(() => {
@@ -73,6 +79,7 @@ export const useAuthStore = () => {
       } else {
         setUser(null);
         localStorage.removeItem('accessToken');
+        redirect('/auth?tab=login');
       }
     });
 
