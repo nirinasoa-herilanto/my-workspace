@@ -19,6 +19,7 @@ export { default as CustomLink } from './molecules/CustomLink';
 export { default as Redirection } from './molecules/Redirection';
 export { default as AuthForm } from './molecules/auth/AuthForm';
 export { default as SocialConnection } from './molecules/auth/SocialConnection';
+export { default as Tab } from './molecules/tab/Tab';
 
 // Organisms components
 export { default as Hero } from './organisms/Hero';
