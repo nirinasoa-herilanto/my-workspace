@@ -61,7 +61,7 @@ export class FirebaseAuthApp {
       );
 
       if (!user.emailVerified) {
-        deleteUser(user); // will delete user on firebase console
+        await deleteUser(user); // will delete user on firebase console
 
         throw new Error('Please use a valid email 😉');
       }
