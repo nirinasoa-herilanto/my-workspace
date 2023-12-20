@@ -31,17 +31,19 @@ const AuthPage = () => {
         {tabValue === 'login' && (
           <AuthForm
             title="Sign in to My workspace"
-            displaySocialConnection
             onAuthSubmit={submitLoginHandler}
+            displaySocialConnection
+            showPassword
+            isLogin
           />
         )}
 
         {tabValue === 'signup' && (
           <AuthForm
             title="Sign up to My workspace"
-            isSignup
             onAuthSubmit={submitSignupHandler}
             displaySocialConnection
+            isSignup
           />
         )}
       </AuthPageWrapper>
