@@ -21,7 +21,7 @@ const AboutUs: React.FC<AboutUsProps> = ({ className }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/auth?tab=login');
+    navigate('/auth?tab=sign-in');
   };
 
   return (

@@ -17,7 +17,7 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/auth?tab=signup');
+    navigate('/auth?tab=sign-up');
   };
 
   return (
@@ -38,7 +38,7 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
             >
               Sign up
             </Button>
-            <Link to={'/auth?tab=login'}>Already have an account?</Link>
+            <Link to={'/auth?tab=sign-in'}>Already have an account?</Link>
           </div>
         </div>
       </div>
