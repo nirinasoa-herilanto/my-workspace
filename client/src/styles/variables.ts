@@ -8,5 +8,6 @@ export const variables = css`
     --blue-500: #3b82f6;
     --blue-600: #2563eb;
     --red-600: #dc2626;
+    --gray: #94a3b8;
   }
 `;

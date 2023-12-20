@@ -22,17 +22,19 @@ const Button: React.FC<CustomWrapperPropsType<HTMLMotionProps<'button'>>> = ({
 
 const ButtonWrapper = styled(motion.button)`
   &.button {
-    padding: 10px;
-    font-size: 16px;
-    color: var(--white);
-    font-family: 'Nunito', sans-serif;
+    & {
+      padding: 10px;
+      font-size: 16px;
+      color: var(--white);
+      font-family: 'Nunito', sans-serif;
 
-    border: none;
-    outline: none;
-    border-radius: 20px;
-    background: var(--blue-500);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
-    cursor: pointer;
+      border: none;
+      outline: none;
+      border-radius: 20px;
+      background: var(--blue-500);
+      box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
   }
 `;
 

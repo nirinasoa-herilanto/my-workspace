@@ -70,7 +70,7 @@ const InputPasswordWrapper = styled.div`
     }
 
     & .input-password {
-      width: 100%;
+      width: calc(100% - 26px);
       height: auto;
 
       padding: 12px;
@@ -99,10 +99,6 @@ const InputPasswordWrapper = styled.div`
     }
 
     @media (min-width: 768px) {
-      & .input-password {
-        width: 474px;
-        height: auto;
-      }
     }
   }
 `;

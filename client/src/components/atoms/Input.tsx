@@ -45,7 +45,7 @@ const InputWrapper = styled.div`
     }
 
     & .input {
-      width: 100%;
+      width: calc(100% - 26px);
       height: 28px;
 
       padding: 12px;
@@ -67,10 +67,6 @@ const InputWrapper = styled.div`
     }
 
     @media (min-width: 768px) {
-      & .input {
-        width: 474px;
-        height: auto;
-      }
     }
   }
 `;
