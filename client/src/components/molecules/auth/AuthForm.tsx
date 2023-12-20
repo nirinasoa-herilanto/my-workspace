@@ -11,10 +11,12 @@ import {
   Loading,
   SocialConnection,
 } from '@project/components';
+// import { HTMLMotionProps,  } from 'framer-motion';
 
 export type AuthFormProps = {
   className?: string;
-  title: string;
+  title?: string;
+  message?: string;
   emailForSignup?: string;
   isLogin?: boolean;
   isSignup?: boolean;
@@ -27,16 +29,23 @@ export type AuthFormProps = {
 
 /**
  * #### AuthForm component
- * Use to display user auth form on the UI:
- * - login
- * - signup
- * - forgot password
- * - complete registration
- * @todo refactor
+ *
+ * Use to display user auth form on the UI.
+ *
+ * *Only used `title` and `message` props, if we want to display some information on the UI*
+ *
+ * - **login**, enable `isLogin`, `showPassword` props.
+ * - **signup**, enable `isSignup` props.
+ * - **forgot password**, enable `isForgotPassword` props.
+ * - **complete registration**, enable `disabledEmail`, `emailForSignup` props.
+ * - **social connection**, depends on our specific needs. We can enable it with `displaySocialConnection` props.
+ *
+ *
  */
 const AuthForm: React.FC<AuthFormProps> = ({
   className,
-  title,
+  title = '',
+  message = '',
   emailForSignup = '',
   isLogin = false,
   isSignup = false,
@@ -46,7 +55,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   displaySocialConnection = false,
   onAuthSubmit,
 }) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingForm, setIsLoadingForm] = useState<boolean>(false);
 
   const {
     value: enteredEmail,
@@ -76,14 +85,17 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
   let validForm: boolean = false;
 
+  // signup form validation
   if (isSignup && isValidEmail) {
     validForm = true;
   }
 
+  // forgot password form validation
   if (isForgotPassword && isValidEmail) {
     validForm = true;
   }
 
+  // signup form validation
   if (
     emailForSignup?.length !== 0 &&
     emailForSignup?.includes('@') &&
@@ -92,6 +104,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
     validForm = true;
   }
 
+  // login form validation
   if (isValidEmail && isValidPassword) {
     validForm = true;
   }
@@ -100,31 +113,33 @@ const AuthForm: React.FC<AuthFormProps> = ({
     e.preventDefault();
 
     if (!validForm) return;
-    setIsLoading(true);
+    setIsLoadingForm(true);
 
     if (isSignup) {
-      // for signup
+      // for signup submit handler
       await onAuthSubmit(enteredEmail, '');
     } else if (emailForSignup) {
-      // for complete registration
+      // for complete registration submit handler
       await onAuthSubmit(emailForSignup, enteredPassword);
     } else if (isForgotPassword) {
-      // for forgot password
+      // for forgot password submit handler
       await onAuthSubmit(enteredEmail, '');
     } else {
-      // for login
+      // for login submit handler
       await onAuthSubmit(enteredEmail, enteredPassword);
     }
 
+    // reset loading & input state
     resetEmailHandler();
     resetPasswordHandler();
-    setIsLoading(false);
+    setIsLoadingForm(false);
   };
 
   return (
     <AuthFormWrapper className={`auth-form ${className || ''}`}>
       <div className="auth-form__header">
-        <h1>{title}</h1>
+        {title.length !== 0 && <h2>{title}</h2>}
+        {message.length !== 0 && <p>{message}</p>}
       </div>
 
       <form onSubmit={submitAuthHandler}>
@@ -160,7 +175,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
           </div>
         )}
 
-        {isLoading ? (
+        {isLoadingForm ? (
           <Loading className="auth-loading" />
         ) : (
           <Button
@@ -183,15 +198,17 @@ const AuthForm: React.FC<AuthFormProps> = ({
 const AuthFormWrapper = styled.div`
   &.auth-form {
     & {
-      padding: 50px;
-
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
 
-    .auth-form__header h1 {
+    .auth-form__header h2 {
       text-align: center;
+    }
+    .auth-form__header p {
+      color: var(--gray);
+      text-align: left;
     }
 
     .auth-btn:disabled {
@@ -224,10 +241,6 @@ const AuthFormWrapper = styled.div`
     }
 
     @media (min-width: 768px) {
-      & {
-        width: 500px;
-        height: auto;
-      }
     }
   }
 `;

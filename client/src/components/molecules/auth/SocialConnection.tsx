@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { useAppStore } from '@project/store/use-app-store';
+
 import { Button, Loading } from '@project/components';
 
 export type SocialConnectionProps = {
@@ -11,6 +12,9 @@ export type SocialConnectionProps = {
 /**
  * #### SocialConnection component
  * Use to display all social connection button like Google, Facebook, more
+ *
+ * Connection's provider available:
+ * - Google
  */
 const SocialConnection: React.FC<SocialConnectionProps> = ({ className }) => {
   const [isGoogleLoading, setIsGoogleLoading] = useState<boolean>(false);
@@ -21,30 +25,29 @@ const SocialConnection: React.FC<SocialConnectionProps> = ({ className }) => {
 
   const googleConnectionHandler = async () => {
     setIsGoogleLoading(true);
-    try {
-      await loginWithGoogle();
-    } catch (error) {
-      setIsGoogleLoading(false);
-    }
+    await loginWithGoogle();
     setIsGoogleLoading(false);
   };
+
+  let content = <Loading className="auth-loading" />;
+
+  if (!isGoogleLoading) {
+    content = (
+      <Button
+        className="auth-btn auth-btn__social"
+        whileTap={{ scale: 1.05 }}
+        transition={{ type: 'spring', stiffness: 500 }}
+        onClick={googleConnectionHandler}
+      >
+        Continue with Google
+      </Button>
+    );
+  }
 
   return (
     <SocialConnectionWrapper className={`social-connection ${className || ''}`}>
       <p style={{ textAlign: 'center' }}>or</p>
-
-      {isGoogleLoading ? (
-        <Loading className="auth-loading" />
-      ) : (
-        <Button
-          className="auth-btn auth-btn__social"
-          whileTap={{ scale: 1.05 }}
-          transition={{ type: 'spring', stiffness: 500 }}
-          onClick={googleConnectionHandler}
-        >
-          Continue with Google
-        </Button>
-      )}
+      <>{content}</>
     </SocialConnectionWrapper>
   );
 };
