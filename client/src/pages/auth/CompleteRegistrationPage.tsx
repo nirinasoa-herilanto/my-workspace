@@ -28,10 +28,21 @@ const CompleteRegistrationPage = () => {
 
   if (!isSignInWithEmailLink(auth, window.location.href)) {
     return (
-      <Redirection
-        message="You are not allowed to perform this operation. Please sign-up 😃."
-        redirectedTo="/auth?tab=signup"
-      />
+      <div
+        className="redirection-wrapper"
+        style={{
+          width: '100%',
+          height: '100dvh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Redirection
+          message="You are not allowed to perform this operation. Please sign-up 😃."
+          redirectedTo="/auth?tab=sign-up"
+        />
+      </div>
     );
   }
 
