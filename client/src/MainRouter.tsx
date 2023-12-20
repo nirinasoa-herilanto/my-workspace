@@ -6,6 +6,7 @@ import {
   WorkspacePage,
   CompleteRegistrationPage,
   AuthPage,
+  ForgotPasswordPage,
 } from '@project/pages';
 
 import { RootLayout, ProtectedRoute } from '@project/components';
@@ -24,6 +25,11 @@ const router = createBrowserRouter([
         path: 'auth',
         index: true,
         element: <AuthPage />,
+      },
+      {
+        path: 'forgot-password',
+        index: true,
+        element: <ForgotPasswordPage />,
       },
       {
         path: 'complete-registration',

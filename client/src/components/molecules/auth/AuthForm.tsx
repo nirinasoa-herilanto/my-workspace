@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { useInput } from '@project/hooks';
 
@@ -14,7 +15,11 @@ import {
 export type AuthFormProps = {
   className?: string;
   title: string;
+  emailForSignup?: string;
+  isLogin?: boolean;
   isSignup?: boolean;
+  isForgotPassword?: boolean;
+  showPassword?: boolean;
   disabledEmail?: boolean;
   displaySocialConnection?: boolean;
   onAuthSubmit: (email: string, password: string) => Promise<void>;
@@ -25,18 +30,22 @@ export type AuthFormProps = {
  * Use to display user auth form on the UI:
  * - login
  * - signup
+ * - forgot password
  * - complete registration
  * @todo refactor
  */
 const AuthForm: React.FC<AuthFormProps> = ({
   className,
   title,
+  emailForSignup = '',
+  isLogin = false,
   isSignup = false,
+  isForgotPassword = false,
+  showPassword = false,
   disabledEmail = false,
   displaySocialConnection = false,
   onAuthSubmit,
 }) => {
-  const [emailStorage, setEmailStorage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
@@ -46,6 +55,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
     inputBlurHandler: emailBlurHandler,
     hasError: emailHasError,
     isValid: isValidEmail,
+    resetInputHandler: resetEmailHandler,
   } = useInput({
     warningMessage: `Please provide a valid email address`,
     validateInputFn: (value) => value.includes('@'),
@@ -58,6 +68,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
     inputBlurHandler: passwordBlurHandler,
     hasError: passwordHasError,
     isValid: isValidPassword,
+    resetInputHandler: resetPasswordHandler,
   } = useInput({
     warningMessage: `Password can not be empty!`,
     validateInputFn: (value) => value.length !== 0,
@@ -69,7 +80,15 @@ const AuthForm: React.FC<AuthFormProps> = ({
     validForm = true;
   }
 
-  if (emailStorage && isValidPassword) {
+  if (isForgotPassword && isValidEmail) {
+    validForm = true;
+  }
+
+  if (
+    emailForSignup?.length !== 0 &&
+    emailForSignup?.includes('@') &&
+    isValidPassword
+  ) {
     validForm = true;
   }
 
@@ -84,21 +103,23 @@ const AuthForm: React.FC<AuthFormProps> = ({
     setIsLoading(true);
 
     if (isSignup) {
+      // for signup
       await onAuthSubmit(enteredEmail, '');
-    } else if (emailStorage) {
-      await onAuthSubmit(enteredEmail, enteredPassword);
+    } else if (emailForSignup) {
+      // for complete registration
+      await onAuthSubmit(emailForSignup, enteredPassword);
+    } else if (isForgotPassword) {
+      // for forgot password
+      await onAuthSubmit(enteredEmail, '');
     } else {
+      // for login
       await onAuthSubmit(enteredEmail, enteredPassword);
     }
 
+    resetEmailHandler();
+    resetPasswordHandler();
     setIsLoading(false);
   };
-
-  useEffect(() => {
-    const email = localStorage.getItem('emailForSignIn');
-
-    email && setEmailStorage(email);
-  }, []);
 
   return (
     <AuthFormWrapper className={`auth-form ${className || ''}`}>
@@ -112,16 +133,16 @@ const AuthForm: React.FC<AuthFormProps> = ({
           name="email"
           htmlFor="email"
           labelFor="Email"
-          value={enteredEmail || emailStorage}
+          value={enteredEmail || emailForSignup}
           hasError={emailHasError}
           warningMessage={emailWarningMessage}
           onChange={emailChangeHandler}
           onBlur={emailBlurHandler}
           placeholder="example@mail.com"
-          disabled={disabledEmail || emailStorage.length !== 0}
+          disabled={disabledEmail}
         />
 
-        {!isSignup && (
+        {showPassword && (
           <InputPassword
             labelFor="Password"
             value={enteredPassword}
@@ -131,6 +152,12 @@ const AuthForm: React.FC<AuthFormProps> = ({
             onBlur={passwordBlurHandler}
             placeholder="Enter you password here"
           />
+        )}
+
+        {isLogin && (
+          <div className="forgot-password">
+            <Link to={'/forgot-password'}>Forgot password?</Link>
+          </div>
         )}
 
         {isLoading ? (
@@ -179,6 +206,21 @@ const AuthFormWrapper = styled.div`
 
     .auth-btn__form {
       margin-top: 16px;
+    }
+
+    .auth-loading {
+      margin: 36px;
+
+      display: flex;
+      justify-content: center;
+    }
+
+    .forgot-password {
+      margin: 12px;
+      text-align: right;
+    }
+    .forgot-password a {
+      color: var(--red-600);
     }
 
     @media (min-width: 768px) {

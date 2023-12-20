@@ -1,4 +1,3 @@
-import { appConfig, googleProvider } from '@project/config';
 import {
   Auth,
   User,
@@ -9,7 +8,11 @@ import {
   signOut,
   updatePassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  deleteUser,
 } from 'firebase/auth';
+
+import { appConfig, googleProvider } from '@project/config';
 
 /**
  * ### FirebaseAuth
@@ -26,34 +29,30 @@ export class FirebaseAuthApp {
   async sendSignupLinkToUser(email: string): Promise<void> {
     try {
       const actionCodeSettings = {
-        url: appConfig.firebaseLinkRedirection,
+        url: `${appConfig.signupLinkRedirection}?emailForSignup=${email}`,
         handleCodeInApp: true,
       };
 
       await sendSignInLinkToEmail(this.auth, email, actionCodeSettings);
-      window.localStorage.setItem('emailForSignIn', email);
     } catch (error) {
       console.log('💥 Firebase send signin link error 💥', error);
-      throw error;
+
+      throw new Error(
+        '💥 Something went wrong when sending signin link. Please try again.'
+      );
     }
   }
 
   /**
    * Use to signup with email & password
+   * @returns User
    */
   async signupWithEmailAndPassword(
+    email: string,
     password: string
   ): Promise<User | undefined> {
     try {
       if (!isSignInWithEmailLink(this.auth, window.location.href)) return;
-
-      let email = window.localStorage.getItem('emailForSignIn') as string;
-
-      if (!email) {
-        email = window.prompt(
-          'Please provide your email for confirmation'
-        ) as string;
-      }
 
       const { user } = await signInWithEmailLink(
         this.auth,
@@ -61,9 +60,9 @@ export class FirebaseAuthApp {
         window.location.href
       );
 
-      window.localStorage.removeItem('emailForSignIn');
-
       if (!user.emailVerified) {
+        deleteUser(user); // will delete user on firebase console
+
         throw new Error('Please use a valid email 😉');
       }
 
@@ -72,10 +71,15 @@ export class FirebaseAuthApp {
       return user;
     } catch (error) {
       console.log('💥 Firebase signin with email & password error 💥', error);
+
       throw error;
     }
   }
 
+  /**
+   * Use to login with email & password
+   * @returns User
+   */
   async loginWithEmailAndPassword(
     email: string,
     password: string
@@ -90,12 +94,34 @@ export class FirebaseAuthApp {
       return user;
     } catch (error) {
       console.log('💥 Firebase login with email & password error 💥', error);
+
       throw error;
     }
   }
 
   /**
+   * Use to reset password in case of user forgot it
+   */
+  async resetPassword(email: string) {
+    try {
+      const actionCodeSettings = {
+        url: `${appConfig.forgotPasswordLinkRedirection}`,
+        handleCodeInApp: true,
+      };
+
+      await sendPasswordResetEmail(this.auth, email, actionCodeSettings);
+    } catch (error) {
+      console.log('💥 Reset password error 💥', error);
+
+      throw new Error(
+        `💥 Something went wrong when reseting password. Please try later 😃.`
+      );
+    }
+  }
+
+  /**
    * Use to sign in with Google account
+   * @returns User
    */
   async signinWithGoogleAccount(): Promise<User> {
     try {
@@ -115,7 +141,9 @@ export class FirebaseAuthApp {
       await signOut(this.auth);
     } catch (error) {
       console.log('💥 Firebase loggout error 💥', error);
-      throw error;
+      throw new Error(
+        `💥 Something went wrong when logout. Please try again 😃.`
+      );
     }
   }
 }

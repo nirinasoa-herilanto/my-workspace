@@ -9,12 +9,13 @@ import { FirebaseAuthApp } from '@project/services';
 export type AuthStoreType = {
   user: User | null;
   logout: () => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  forgotPassword: (email: string) => Promise<void>;
   sendSignupLinkTo: (email: string) => Promise<void>;
   signupWithEmailAndPassword: (
     email: string,
     password: string
   ) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
   loginWithEmailAndPassword: (email: string, password: string) => Promise<void>;
 };
 
@@ -36,8 +37,14 @@ export const useAuthStore = () => {
   /**
    * Use to signup with email and password
    */
-  const signupWithEmailAndPassword = async (password: string) => {
-    const user = await firebaseAuthApp.signupWithEmailAndPassword(password);
+  const signupWithEmailAndPassword = async (
+    email: string,
+    password: string
+  ) => {
+    const user = await firebaseAuthApp.signupWithEmailAndPassword(
+      email,
+      password
+    );
     user && setUser(user);
   };
 
@@ -50,6 +57,13 @@ export const useAuthStore = () => {
       password
     );
     user && setUser(user);
+  };
+
+  /**
+   * Use to send `reset password` instruction
+   */
+  const forgotPassword = async (email: string) => {
+    await firebaseAuthApp.resetPassword(email);
   };
 
   /**
@@ -95,5 +109,6 @@ export const useAuthStore = () => {
     sendSignupLinkTo,
     signupWithEmailAndPassword,
     loginWithEmailAndPassword,
+    forgotPassword,
   } as AuthStoreType;
 };
