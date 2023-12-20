@@ -1,13 +1,13 @@
-import React, { ReactNode, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useAppStore } from '@project/store/use-app-store';
 
-export type PublicRouteProps = {
-  children: ReactNode;
-};
-
-const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
+/**
+ * ### PublicRoute component
+ * A public layout for checking if the connected user tryed to connect or reset password again.
+ */
+const PublicRoute = () => {
   const navigate = useNavigate();
 
   const {
@@ -20,7 +20,7 @@ const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
     }
   }, [navigate, user]);
 
-  return children;
+  return <Outlet />;
 };
 
 export default PublicRoute;
