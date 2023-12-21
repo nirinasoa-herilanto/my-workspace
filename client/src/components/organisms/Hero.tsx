@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { assets } from '@project/assets';
@@ -14,6 +14,12 @@ export type HeroProps = {
  * ### Hero component
  */
 const Hero: React.FC<HeroProps> = ({ className }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/auth?tab=sign-up');
+  };
+
   return (
     <HeroWrapper className={`hero ${className || ''}`}>
       <div className="hero-content">
@@ -28,10 +34,11 @@ const Hero: React.FC<HeroProps> = ({ className }) => {
               className="hero-action__btn"
               whileTap={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 500 }}
+              onClick={handleClick}
             >
               Sign up
             </Button>
-            <Link to={'..'}>Already have an account?</Link>
+            <Link to={'/auth?tab=sign-in'}>Already have an account?</Link>
           </div>
         </div>
       </div>

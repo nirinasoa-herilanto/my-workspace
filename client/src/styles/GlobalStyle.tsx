@@ -48,6 +48,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
 
+  input, textarea {
+    font-family: 'Nunito', sans-serif;
+  }
 `;
 
 export default GlobalStyle;

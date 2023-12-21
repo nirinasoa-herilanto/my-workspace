@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Errorpage = () => {
+export type ErrorPageProps = {
+  message?: string;
+};
+
+/**
+ * ## Error page
+ */
+const ErrorPage: React.FC<ErrorPageProps> = ({ message }) => {
   return (
     <ErrorWrapper className="error-page">
       <div className="content">
-        <h1>404 | Url not found!</h1>
+        <h1>{message || '404 | Url not found!'}</h1>
         <Link to={'..'}>Return</Link>
       </div>
     </ErrorWrapper>
@@ -31,4 +38,4 @@ const ErrorWrapper = styled.div`
   }
 `;
 
-export default Errorpage;
+export default ErrorPage;
