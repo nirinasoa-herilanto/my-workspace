@@ -1,9 +1,20 @@
 import styled from 'styled-components';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useAppStore } from '@project/store/use-app-store';
 
 import { AuthForm, Tab, Logo } from '@project/components';
+
+const TAB_NAV_DATA = [
+  {
+    item: 'Sign in',
+    link: 'sign-in',
+  },
+  {
+    item: 'Sign up',
+    link: 'sign-up',
+  },
+];
 
 /**
  * ## Auth page
@@ -11,6 +22,8 @@ import { AuthForm, Tab, Logo } from '@project/components';
 const AuthPage = () => {
   const [searchParams] = useSearchParams();
   const tabValue = searchParams.get('tab')!;
+
+  const navigate = useNavigate();
 
   const {
     auth: { loginWithEmailAndPassword, sendSignupLinkTo },
@@ -22,6 +35,11 @@ const AuthPage = () => {
 
   const submitSignupHandler = async (email: string) => {
     await sendSignupLinkTo(email);
+  };
+
+  // Use to switch on each tabs navigation
+  const switchAuthTabHandler = (tabLink: string) => {
+    navigate(`?tab=${tabLink}`);
   };
 
   let tabContentElement = (
@@ -61,7 +79,14 @@ const AuthPage = () => {
     <AuthPageWrapper className="auth">
       <Logo className="auth-logo" />
 
-      <Tab activeTab={tabValue}>{tabContentElement}</Tab>
+      <Tab
+        $tab-width={520}
+        activeTab={tabValue}
+        tabNavData={TAB_NAV_DATA}
+        onSelect={switchAuthTabHandler}
+      >
+        {tabContentElement}
+      </Tab>
     </AuthPageWrapper>
   );
 };

@@ -1,52 +1,75 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
+export type TabNavType = {
+  item: string;
+  link: string;
+};
+
+export type TabAttrStyleProps = {
+  ['$tab-lengths']: number;
+  ['$tab-width']: number;
+};
+
 export type TabProps = {
   className?: string;
-  activeTab: string;
+  activeTab?: string;
+  tabNavData: TabNavType[];
+  onSelect: (select: string) => void;
   children: React.ReactNode;
-};
+} & Omit<TabAttrStyleProps, '$tab-lengths'>;
 
 /**
  * ### Tab component
  * Use to display tab element on the UI.
- * - already animated by `framer motion`
- * @todo refactor
+ * - Already animated by `framer motion`.
+ *
+ * **Tab Props**
+ * @param activeTab  optional, but we can use it to set a default active tab
+ * @param tabNavData  your tab navigation items data
+ * @param $tab-width  will be applied on tablet screen `768px`, example `$tab-width={520}`
+ * @param onSelect    a method for switching on each tabs
+ *
  */
-const Tab: React.FC<TabProps> = ({ className, activeTab, children }) => {
-  const navigate = useNavigate();
+const Tab: React.FC<TabProps> = ({
+  className,
+  activeTab = '',
+  tabNavData,
+  onSelect,
+  children,
+  ...rest
+}) => {
+  const [activeTabItem, setActiveTabItem] = useState<string>(activeTab);
 
   const isActiveTabHandler = (item: string): string => {
-    return activeTab === item ? 'active' : '';
+    return activeTabItem === item ? 'active' : '';
   };
 
-  const switchTabHandler = (item: string) => {
-    navigate(item);
+  const switchTabHandler = (selectTab: string) => {
+    setActiveTabItem(selectTab);
+    onSelect(selectTab);
   };
 
   return (
-    <TabWrapper className={`tab ${className || ''}`}>
+    <TabWrapper
+      className={`tab ${className || ''}`}
+      $tab-lengths={tabNavData.length}
+      {...rest}
+    >
       <menu className="tab-header">
         <ul className="tab-lists">
-          <li>
-            <button
-              className={isActiveTabHandler('sign-in')}
-              onClick={switchTabHandler.bind(null, '/auth?tab=sign-in')}
-            >
-              Sign in
-            </button>
-          </li>
-          <li>
-            <button
-              className={isActiveTabHandler('sign-up')}
-              onClick={switchTabHandler.bind(null, '/auth?tab=sign-up')}
-            >
-              Sign up
-            </button>
-          </li>
+          {tabNavData.map((tab) => (
+            <li key={tab.item}>
+              <button
+                className={isActiveTabHandler(tab.link)}
+                onClick={switchTabHandler.bind(null, tab.link)}
+              >
+                {tab.item}
+              </button>
+            </li>
+          ))}
         </ul>
       </menu>
 
@@ -66,10 +89,12 @@ const Tab: React.FC<TabProps> = ({ className, activeTab, children }) => {
   );
 };
 
-const TabWrapper = styled.div`
+const TabWrapper = styled.div<TabAttrStyleProps>`
   &.tab {
     & {
-      background: var(--white);
+      padding-left: 20px;
+      padding-right: 20px;
+
       box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
     }
 
@@ -84,17 +109,19 @@ const TabWrapper = styled.div`
 
     & .tab-content {
       padding: 20px;
-      width: calc(375px - 40px); // sum of tab with button
+      width: calc(100% - 40px);
       height: auto;
+      background: var(--white);
     }
 
     .tab-lists {
       margin: 0;
       display: flex;
+      flex-direction: column;
     }
 
     .tab-lists li button {
-      width: calc(375px / 2);
+      width: 100%;
       height: 52px;
 
       border: none;
@@ -111,23 +138,30 @@ const TabWrapper = styled.div`
     }
 
     @media (min-width: 768px) {
-      & .tab-content {
-        padding: 20px;
-        width: 480px;
-        height: auto;
+      & {
+        padding: 0;
+      }
+
+      .tab-lists {
+        display: flex;
+        flex-direction: row;
       }
 
       .tab-lists li button {
-        width: calc(520px / 2);
+        /* width: calc(520px / 3); // tab item length */
+        width: ${(props) =>
+          `calc(${props['$tab-width']}px / ${props['$tab-lengths']})`};
         height: 48px;
+      }
+
+      & .tab-content {
+        /* width: calc(520px - 40px); */
+        width: ${(props) => `calc(${props['$tab-width']}px - 40px)`};
+        height: auto;
       }
     }
 
     @media (min-width: 1024px) {
-      /* .tab-lists li button {
-        width: calc(750px / 2);
-        height: 52px;
-      } */
     }
   }
 `;
