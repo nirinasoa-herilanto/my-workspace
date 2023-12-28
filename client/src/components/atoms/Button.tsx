@@ -5,8 +5,9 @@ import { HTMLMotionProps, motion } from 'framer-motion';
 import type { CustomWrapperPropsType } from '@project/types';
 
 /**
- * #### Button component
- * - We can enable `motion style` by passing it through `props`
+ * A custom Button component.
+ *
+ * We can enable `motion style` by passing it through `props`
  */
 const Button: React.FC<CustomWrapperPropsType<HTMLMotionProps<'button'>>> = ({
   className,
