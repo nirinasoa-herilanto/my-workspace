@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { assets } from '@project/assets';
-
 import { useAppStore } from '@project/store/use-app-store';
 
 export type LogoProps = {
@@ -11,7 +10,7 @@ export type LogoProps = {
 };
 
 /**
- * ### Logo component
+ * A custom logo component
  */
 const Logo: React.FC<LogoProps> = ({ className }) => {
   const {
