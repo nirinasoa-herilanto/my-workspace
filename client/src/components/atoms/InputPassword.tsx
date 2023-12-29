@@ -12,9 +12,8 @@ export type InputPasswordProps = {
 type InputRef = HTMLInputElement;
 
 /**
- * #### InputPassword component
  * A custom input password component built in HTMLInputElement `input` with `type="password"`.
- * - Only for handling password input
+ * - Only used for handling password input
  *
  */
 const InputPassword = React.forwardRef<InputRef, InputPasswordProps>(
