@@ -22,7 +22,6 @@ export type TabProps = {
 } & Omit<TabAttrStyleProps, '$tab-lengths'>;
 
 /**
- * ### Tab component
  * Use to display tab element on the UI.
  * - Already animated by `framer motion`.
  *
@@ -95,7 +94,7 @@ const TabWrapper = styled.div<TabAttrStyleProps>`
       padding-left: 20px;
       padding-right: 20px;
 
-      box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+      /* box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1); */
     }
 
     & .tab-header {
