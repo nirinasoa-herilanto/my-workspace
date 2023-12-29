@@ -19,6 +19,12 @@ export const decorators = [
 
 const preview: Preview = {
   parameters: {
+    options: {
+      method: 'alphabetical',
+      storySort: {
+        order: ['system', 'introduction', 'components', 'pages', '*'],
+      },
+    },
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
