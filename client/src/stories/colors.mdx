@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/blocks';
+import { ColorPalette, ColorItem } from '@storybook/blocks';
+
+import { lightMode, darkMode } from '@project/styles';
+
+<Meta title="System/colors" />
+
+<ColorPalette>
+  <ColorItem
+    title="Color palette"
+    colors={{
+      white: '#ffffff',
+      [' --zinc-50']: '#fafafa',
+      [' --zinc']: '#18181b',
+      ['--blue-500']: '#3b82f6',
+      ['--blue-600']: '#2563eb',
+      ['--red-600']: '#dc2626',
+      ['--gray']: '#94a3b8',
+    }}
+  />
+  <ColorItem title="Light mode" colors={lightMode} />
+  <ColorItem title="Dark mode" colors={darkMode} />
+</ColorPalette>
