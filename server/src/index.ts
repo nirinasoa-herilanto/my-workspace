@@ -13,7 +13,6 @@ import http from 'http';
 import cors from 'cors';
 import express from 'express';
 import mongoose from 'mongoose';
-import mongoSanitize from 'express-mongo-sanitize';
 import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
@@ -25,12 +24,10 @@ import app from '@project/app';
 import { typeDefs } from '@project/schemas';
 import { resolvers } from '@project/resolvers';
 
-app.use(mongoSanitize());
-
 const httpServer = http.createServer(app);
 
 // Database connection
-(async () => {
+const databaseConnectionHandler = async () => {
   try {
     await mongoose.connect(appConfig.databaseLocal!);
 
@@ -38,10 +35,13 @@ const httpServer = http.createServer(app);
   } catch (error: any) {
     console.log(`💥 DB connection failed: ${error?.message}`);
   }
-})();
+};
 
 // Apollo Server connection
-(async (typeDefs: string, resolvers: any) => {
+const apolloServerConnectionHandler = async (
+  typeDefs: string,
+  resolvers: any
+) => {
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
@@ -54,9 +54,14 @@ const httpServer = http.createServer(app);
     '/graphql',
     cors<cors.CorsRequest>(),
     express.json(),
-    expressMiddleware(apolloServer)
+    expressMiddleware(apolloServer, {
+      context: async ({ req }) => ({ req }),
+    })
   );
-})(typeDefs, resolvers);
+};
+
+databaseConnectionHandler();
+apolloServerConnectionHandler(typeDefs, resolvers);
 
 // Server connection
 const server = app.listen(appConfig.port, () => {
