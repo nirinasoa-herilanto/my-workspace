@@ -1,6 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
-import path from 'path';
 import mongoSanitize from 'express-mongo-sanitize';
 
 import { wording, AppError } from '@project/utils';
@@ -8,9 +7,6 @@ import { wording, AppError } from '@project/utils';
 const app = express();
 
 app.use(cors());
-
-// serving static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '5mb' }));
 app.use(mongoSanitize());
