@@ -39,7 +39,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     },
     summary: String,
     image: {
-      url: {
+      link: {
         type: String,
         default:
           'https://res.cloudinary.com/nhr/image/upload/v1704893029/images/profile.png',

@@ -2,6 +2,13 @@
  * Image interface
  */
 export interface IImage {
-  url: string;
+  link: string;
   alt: string;
+}
+
+/**
+ * Custom input interface
+ */
+export interface ICustomInput<T> {
+  input: T;
 }
