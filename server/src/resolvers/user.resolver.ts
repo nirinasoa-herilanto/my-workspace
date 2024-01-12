@@ -20,17 +20,7 @@ interface IUserInput {
  */
 export const viewMyProfile = catchAsyncHandler(
   async (parent: any, args: any, { req }: { req: Request }) => {
-    const currentUser = await authCheck(req);
-
-    const profile = await User.findOne({ email: currentUser.email }).exec();
-
-    if (!profile) {
-      throw new Error(
-        `Account not found! Sign up for free or contact our agent 😃.`
-      );
-    }
-
-    // TODO, check if the user hasn't deleted his account yet. `isDeleted: true`
+    const profile = await User.checkUserAccount(req);
 
     return profile;
   }
@@ -45,17 +35,7 @@ export const switchConnectionMode = catchAsyncHandler(
     args: ICustomInput<'active' | 'inactive'>,
     { req }: { req: Request }
   ) => {
-    const currentUser = await authCheck(req);
-
-    const user = await User.findOne({ email: currentUser.email }).exec();
-
-    if (!user) {
-      throw new Error(
-        `Account not found! Sign up for free or contact our agent 😃.`
-      );
-    }
-
-    // TODO, check if the user hasn't deleted his account yet. `isDeleted: true`
+    const user = await User.checkUserAccount(req);
 
     let userMode = true;
 
@@ -77,12 +57,7 @@ export const switchConnectionMode = catchAsyncHandler(
 export const addNewUser = catchAsyncHandler<{ email: string }>(
   async (parent: any, args: any, { req }: { req: Request }) => {
     const currentUser = await authCheck(req);
-
-    const existingUser = await User.findOne({
-      email: currentUser.email,
-    }).exec();
-
-    // TODO, check if the user hasn't deleted his account yet. `isDeleted: true`
+    const existingUser = await User.checkUserAccount(req);
 
     if (existingUser) {
       // switch user connection to be `active` mode
@@ -110,10 +85,7 @@ export const updateUserAccount = catchAsyncHandler(
     { req }: { req: Request }
   ) => {
     const currentUser = await authCheck(req);
-
-    const prevUser = await User.findOne({ email: currentUser.email }).exec();
-
-    // TODO, check if the user hasn't deleted his account yet. `isDeleted: true`
+    const prevUser = await User.checkUserAccount(req);
 
     if (prevUser?.email.toString() !== currentUser.email?.toString()) {
       throw new Error(`
@@ -143,10 +115,7 @@ export const updateUserAccount = catchAsyncHandler(
 export const disableUserAccount = catchAsyncHandler(
   async (parent: any, args: any, { req }: { req: Request }) => {
     const currentUser = await authCheck(req);
-
-    const prevUser = await User.findOne({ email: currentUser.email }).exec();
-
-    // TODO, check if the user hasn't deleted his account yet. `isDeleted: true`
+    const prevUser = await User.checkUserAccount(req);
 
     if (prevUser?.email.toString() !== currentUser.email?.toString()) {
       throw new Error(`

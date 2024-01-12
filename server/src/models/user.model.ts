@@ -1,6 +1,8 @@
+import { Request } from 'express';
 import { Model, Schema, HydratedDocument, model } from 'mongoose';
 
 import { IImage } from '@project/utils';
+import { authCheck } from '@project/auth';
 
 interface IUser {
   username: string;
@@ -13,9 +15,15 @@ interface IUser {
   isDeleted: boolean; // if user delete his account
 }
 
+// instance methods interface
 interface IUserMethods {}
 
-interface UserModel extends Model<IUser, {}, IUserMethods> {}
+// statics interface
+interface UserModel extends Model<IUser, {}, IUserMethods> {
+  checkUserAccount(
+    req: Request
+  ): Promise<HydratedDocument<IUser, IUserMethods>>;
+}
 
 const userSchema = new Schema<IUser, UserModel, IUserMethods>(
   {
@@ -60,6 +68,7 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
     isDeleted: {
       type: Boolean,
       default: false,
+      select: false,
     },
   },
   {
@@ -70,6 +79,34 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
 );
 
 userSchema.index({ username: 'text' });
+
+/**
+ * Use to find `user` and check his account if it's not deleted yet.
+ * @returns user
+ */
+userSchema.statics.checkUserAccount = async function (req: Request) {
+  const currentUser = await authCheck(req);
+
+  const user = await this.findOne({ email: currentUser.email })
+    .select('+isDeleted')
+    .exec();
+
+  // console.log(user);
+
+  if (!user) {
+    throw new Error(
+      `Account not found! Sign up for free or contact our agent 😃.`
+    );
+  }
+
+  if (user.isDeleted) {
+    throw new Error(
+      `It seems that your account is closed. To reopen your account, please send us your report 😃.`
+    );
+  }
+
+  return user;
+};
 
 /**
  * User model
