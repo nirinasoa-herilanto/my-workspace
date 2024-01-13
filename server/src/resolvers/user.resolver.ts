@@ -6,6 +6,7 @@ import { authCheck } from '@project/auth';
 import { ICustomInput, catchAsyncHandler } from '@project/utils';
 
 import { User } from '@project/models';
+import { IUser, User } from '@project/models';
 
 interface IUserInput {
   _id?: Types.ObjectId | null;
@@ -18,7 +19,7 @@ interface IUserInput {
  * Use to view user profile
  * @todo done
  */
-export const viewMyProfile = catchAsyncHandler(
+export const viewMyProfile = catchAsyncHandler<IUser>(
   async (parent: any, args: any, { req }: { req: Request }) => {
     const profile = await User.checkUserAccount(req);
 
@@ -54,10 +55,12 @@ export const switchConnectionMode = catchAsyncHandler(
  * Use to add new user
  * @todo done
  */
-export const addNewUser = catchAsyncHandler<{ email: string }>(
+export const addNewUser = catchAsyncHandler<IUser>(
   async (parent: any, args: any, { req }: { req: Request }) => {
     const currentUser = await authCheck(req);
-    const existingUser = await User.checkUserAccount(req);
+    const existingUser = await User.findOne({
+      email: currentUser.email,
+    }).exec();
 
     if (existingUser) {
       // switch user connection to be `active` mode
@@ -78,7 +81,7 @@ export const addNewUser = catchAsyncHandler<{ email: string }>(
  * Use to update user information
  *  - @todo done
  */
-export const updateUserAccount = catchAsyncHandler(
+export const updateUserAccount = catchAsyncHandler<IUser>(
   async (
     parent: any,
     args: ICustomInput<IUserInput>,
@@ -112,7 +115,7 @@ export const updateUserAccount = catchAsyncHandler(
  * Use to delete user by disabling his account
  * - @todo done
  */
-export const disableUserAccount = catchAsyncHandler(
+export const disableUserAccount = catchAsyncHandler<IUser>(
   async (parent: any, args: any, { req }: { req: Request }) => {
     const currentUser = await authCheck(req);
     const prevUser = await User.checkUserAccount(req);
