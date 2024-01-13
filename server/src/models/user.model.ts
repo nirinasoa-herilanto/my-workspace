@@ -1,10 +1,13 @@
 import { Request } from 'express';
 import { Model, Schema, HydratedDocument, model } from 'mongoose';
 
+import { appConfig } from '@project/config';
+
 import { IImage } from '@project/utils';
+
 import { authCheck } from '@project/auth';
 
-interface IUser {
+export interface IUser {
   username: string;
   email: string;
   title: string;
@@ -16,7 +19,9 @@ interface IUser {
 }
 
 // instance methods interface
-interface IUserMethods {}
+interface IUserMethods {
+  isAdminUser(): boolean;
+}
 
 // statics interface
 interface UserModel extends Model<IUser, {}, IUserMethods> {
@@ -79,6 +84,10 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>(
 );
 
 userSchema.index({ username: 'text' });
+
+userSchema.methods.isAdminUser = function () {
+  return this.email.toString() === appConfig.adminUser.toString();
+};
 
 /**
  * Use to find `user` and check his account if it's not deleted yet.

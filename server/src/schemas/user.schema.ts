@@ -20,9 +20,15 @@ export const userSchema = `
     summary: String
   }
 
+  input Pagination {
+    page: Int
+    limit: Int
+  }
+
   # QUERY
   type Query {
     viewMyProfile: User!
+    allUsers(input: Pagination!): [User]!
   }
 
   # MUTATION
@@ -31,5 +37,6 @@ export const userSchema = `
     switchConnectionMode(input: ConnectionMode!): User!
     updateUserAccount(input: UpdateUserInput!): User!
     disableUserAccount: User!
+    deleteUser: [User]!
   }
 `;

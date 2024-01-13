@@ -5,8 +5,12 @@ import { authCheck } from '@project/auth';
 
 import { ICustomInput, catchAsyncHandler } from '@project/utils';
 
-import { User } from '@project/models';
 import { IUser, User } from '@project/models';
+
+interface IPagination {
+  page: number;
+  limit: number;
+}
 
 interface IUserInput {
   _id?: Types.ObjectId | null;
@@ -14,6 +18,48 @@ interface IUserInput {
   title: string;
   summary: string;
 }
+
+/**
+ * Use to check `user` the current logged-in user if it's an `admin`.
+ */
+const restrictToAdmin = async (req: Request): Promise<IUser | null> => {
+  const currentUser = await authCheck(req);
+  const user = await User.findOne({ email: currentUser.email }).exec();
+
+  const isAdmin = user?.isAdminUser();
+
+  if (!isAdmin) {
+    throw new Error(`💥 Sorry, you are not allowed to perform this action.`);
+  }
+
+  return user;
+};
+
+/**
+ * Use to view all users profile
+ * - reserved to `admin`
+ * @todo update result response to {total: 100, page: 1, limit: 10, data: []}
+ */
+export const allUsers = catchAsyncHandler<IUser[]>(
+  async (
+    parent: any,
+    args: ICustomInput<IPagination>,
+    { req }: { req: Request }
+  ) => {
+    const currentPage = args.input.page || 1;
+    const limitRes = args.input.limit || 10;
+
+    await restrictToAdmin(req);
+
+    const allUsers = await User.find()
+      .select('+isDeleted')
+      .skip((currentPage - 1) * limitRes)
+      .limit(limitRes)
+      .exec();
+
+    return allUsers;
+  }
+);
 
 /**
  * Use to view user profile
@@ -132,5 +178,30 @@ export const disableUserAccount = catchAsyncHandler<IUser>(
     }
 
     return prevUser;
+  }
+);
+
+/**
+ * Use to delete user definitely.
+ * - reserved to `admin`
+ * @todo in progress
+ */
+export const deleteUser = catchAsyncHandler<IUser[]>(
+  async (parent: any, args: any, { req }: { req: Request }) => {
+    await restrictToAdmin(req);
+
+    // check if it is a valid ID
+
+    const users = await User.find({
+      _id: { $in: ['65a285ee2329fbf9be9d998e', '659fd4562a6bf8d6e7884d4e'] },
+    }).exec();
+
+    // const results = await User.deleteMany({
+    //   _id: { $in: ['65a285ee2329fbf9be9d998e', '659fd4562a6bf8d6e7884d4e'] },
+    // });
+
+    // console.log('Delete_results', results);
+
+    return users;
   }
 );
