@@ -12,3 +12,10 @@ export interface IImage {
 export interface ICustomInput<T> {
   input: T;
 }
+
+export interface IResults<T> {
+  page: number;
+  limit: number;
+  total: number;
+  data: T;
+}

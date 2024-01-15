@@ -13,6 +13,19 @@ export const userSchema = `
     updatedAt: DateTime
   }
 
+  # FORMATTED DATA RESPONSE
+  type UserResponse {
+    page: Int!
+    limit: Int!
+    total: Int!
+    data: [User]!
+  }
+
+  type DeleteUserResponse {
+    total: Int
+    data: [User]!
+  }
+
   # INPUT
   input UpdateUserInput {
     username: String
@@ -20,15 +33,14 @@ export const userSchema = `
     summary: String
   }
 
-  input Pagination {
-    page: Int
-    limit: Int
+  input DeleteUserInput {
+    userId: [ID!]
   }
 
   # QUERY
   type Query {
     viewMyProfile: User!
-    allUsers(input: Pagination!): [User]!
+    allUsers(input: Pagination!): UserResponse!
   }
 
   # MUTATION
@@ -37,6 +49,6 @@ export const userSchema = `
     switchConnectionMode(input: ConnectionMode!): User!
     updateUserAccount(input: UpdateUserInput!): User!
     disableUserAccount: User!
-    deleteUser: [User]!
+    deleteUser(input: DeleteUserInput!): DeleteUserResponse!
   }
 `;

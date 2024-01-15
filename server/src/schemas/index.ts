@@ -11,6 +11,12 @@ export const typeDefs = `
     INACTIVE
   }
 
+  # Pagination input
+  input Pagination {
+    page: Int
+    limit: Int
+  }
+
   # Image schema
   type Image {
     link: String

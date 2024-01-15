@@ -3,13 +3,17 @@ import { Types } from 'mongoose';
 
 import { authCheck } from '@project/auth';
 
-import { ICustomInput, catchAsyncHandler } from '@project/utils';
+import { IResults, ICustomInput, catchAsyncHandler } from '@project/utils';
 
 import { IUser, User } from '@project/models';
 
 interface IPagination {
   page: number;
   limit: number;
+}
+
+interface IDeleteUserInput {
+  userId: Types.ObjectId[];
 }
 
 interface IUserInput {
@@ -38,9 +42,8 @@ const restrictToAdmin = async (req: Request): Promise<IUser | null> => {
 /**
  * Use to view all users profile
  * - reserved to `admin`
- * @todo update result response to {total: 100, page: 1, limit: 10, data: []}
  */
-export const allUsers = catchAsyncHandler<IUser[]>(
+export const allUsers = catchAsyncHandler<IResults<IUser[]>>(
   async (
     parent: any,
     args: ICustomInput<IPagination>,
@@ -51,19 +54,31 @@ export const allUsers = catchAsyncHandler<IUser[]>(
 
     await restrictToAdmin(req);
 
+    const totalUsers = await User.find()
+      .select('+isDeleted')
+      .where({ isDeleted: { $ne: true } })
+      .countDocuments();
+
     const allUsers = await User.find()
       .select('+isDeleted')
+      .where({ isDeleted: { $ne: true } })
       .skip((currentPage - 1) * limitRes)
       .limit(limitRes)
       .exec();
 
-    return allUsers;
+    const results = {
+      page: currentPage,
+      limit: limitRes,
+      total: totalUsers,
+      data: allUsers,
+    };
+
+    return results;
   }
 );
 
 /**
  * Use to view user profile
- * @todo done
  */
 export const viewMyProfile = catchAsyncHandler<IUser>(
   async (parent: any, args: any, { req }: { req: Request }) => {
@@ -75,6 +90,7 @@ export const viewMyProfile = catchAsyncHandler<IUser>(
 
 /**
  * Use to switch user connection mode if `connected` or not
+ * @todo done
  */
 export const switchConnectionMode = catchAsyncHandler(
   async (
@@ -99,7 +115,6 @@ export const switchConnectionMode = catchAsyncHandler(
 
 /**
  * Use to add new user
- * @todo done
  */
 export const addNewUser = catchAsyncHandler<IUser>(
   async (parent: any, args: any, { req }: { req: Request }) => {
@@ -125,7 +140,6 @@ export const addNewUser = catchAsyncHandler<IUser>(
 
 /**
  * Use to update user information
- *  - @todo done
  */
 export const updateUserAccount = catchAsyncHandler<IUser>(
   async (
@@ -159,7 +173,6 @@ export const updateUserAccount = catchAsyncHandler<IUser>(
 
 /**
  * Use to delete user by disabling his account
- * - @todo done
  */
 export const disableUserAccount = catchAsyncHandler<IUser>(
   async (parent: any, args: any, { req }: { req: Request }) => {
@@ -184,24 +197,33 @@ export const disableUserAccount = catchAsyncHandler<IUser>(
 /**
  * Use to delete user definitely.
  * - reserved to `admin`
- * @todo in progress
  */
 export const deleteUser = catchAsyncHandler<IUser[]>(
-  async (parent: any, args: any, { req }: { req: Request }) => {
+  async (
+    parent: any,
+    args: ICustomInput<IDeleteUserInput>,
+    { req }: { req: Request }
+  ) => {
+    const inputIds = args.input.userId;
+
     await restrictToAdmin(req);
 
     // check if it is a valid ID
+    const isValid = inputIds.every((id) => Types.ObjectId.isValid(id));
 
-    const users = await User.find({
-      _id: { $in: ['65a285ee2329fbf9be9d998e', '659fd4562a6bf8d6e7884d4e'] },
-    }).exec();
+    if (!isValid) {
+      throw new Error('Invalid input ID! Please, verify it again 😉.');
+    }
 
-    // const results = await User.deleteMany({
-    //   _id: { $in: ['65a285ee2329fbf9be9d998e', '659fd4562a6bf8d6e7884d4e'] },
-    // });
+    const users = await User.find({ _id: { $in: inputIds } }).exec();
 
-    // console.log('Delete_results', results);
+    const res = await User.deleteMany({ _id: { $in: inputIds } });
 
-    return users;
+    const results = {
+      total: res.deletedCount,
+      data: users,
+    };
+
+    return results;
   }
 );
