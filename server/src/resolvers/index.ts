@@ -9,7 +9,7 @@ import {
   switchConnectionMode,
   disableUserAccount,
   deleteUser,
-} from './user.resolver';
+} from './user/user.resolver';
 
 export const resolvers = {
   DateTime: DateTimeResolver,

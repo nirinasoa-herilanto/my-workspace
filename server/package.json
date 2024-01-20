@@ -9,7 +9,7 @@
     "start:run": "nodemon ./build/index.js",
     "dev": "concurrently npm:start:build npm:start:run",
     "start": "npm run build:prod && node ./build/index.js",
-    "test": "jest src"
+    "test": "jest --clearCache && jest src"
   },
   "keywords": [],
   "author": "NHR",
