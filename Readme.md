@@ -5,11 +5,19 @@ with your team easily.
 
 # Getting started
 
-### Authentication N/A
+### 1 - Project management
 
-In the future, the entire apps will use `Firebase auth`.
+To stay organized on this project, I use `Notion`. We can learn about the application by clicking this [link](https://nhr-it.notion.site/f4c2504c3aee467ea2c9b744968a76e9?v=11fa2dfc0d66476696649ffc202d291f&pvs=4).
 
-### Env variables
+For questions, any advice for improving the app, and more. Feel free to contact me, here is my email address `nirinasoa.herilanto@gmail.com`
+
+P.S. _The Notion's page will be updated later until the project will be completed. 😉_
+
+### 2 - Authentication
+
+The app use third-party `Firebase auth` service for managing users authentication.
+
+### 3 - Env variables
 
 Before running the application, we need to set up our `env` variables on each application. i.e. both client and server.
 You can do it by adding a new file `.env`, then add your env variables
@@ -41,7 +49,7 @@ You can do it by adding a new file `.env`, then add your env variables
   DATABASE_URL= ... your MongoDB Atlas endpoint ...
   ```
 
-### Local dev
+### 4 - Local dev
 
 After cloning the project on my repository, we can follow these commandes to run the application. And please sure that you are in the project root directories.
 
@@ -83,3 +91,8 @@ git clone https://github.com/nirinasoa-herilanto/my-workspace.git
 # Author
 
 Nirinasoa Herilanto
+
+# Acknowledgments
+
+- All my friends for their support.
+- [Marius Espejo](https://www.youtube.com/channel/UCDpd-qEwAI9wglx4tsEBAtw), for his Storybook advice.
