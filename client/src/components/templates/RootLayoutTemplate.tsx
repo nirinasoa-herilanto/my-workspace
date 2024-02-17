@@ -3,15 +3,17 @@ import { Outlet } from 'react-router-dom';
 
 import { Footer } from '@project/components';
 
-export type RootLayoutProps = {
+export type RootLayoutTemplateProps = {
   hasFooter?: boolean;
 };
 
 /**
- * ### RootLayout component
+ * ### RootLayoutTemplate component
  * A default layout component
  */
-const RootLayout: React.FC<RootLayoutProps> = ({ hasFooter = false }) => {
+const RootLayoutTemplate: React.FC<RootLayoutTemplateProps> = ({
+  hasFooter = false,
+}) => {
   return (
     <Fragment>
       <main className="main-content">
@@ -22,4 +24,4 @@ const RootLayout: React.FC<RootLayoutProps> = ({ hasFooter = false }) => {
   );
 };
 
-export default RootLayout;
+export default RootLayoutTemplate;

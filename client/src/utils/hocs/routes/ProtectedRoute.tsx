@@ -5,8 +5,7 @@ import { useAppStore } from '@project/store/use-app-store';
 import { Redirection } from '@project/components';
 
 /**
- * ### ProtectedRoute component
- * A protected layout, required user authentication
+ * A protected layout, will check/manage user authentication with redirection
  */
 const ProtectedRoute = () => {
   const {
