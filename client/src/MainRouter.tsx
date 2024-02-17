@@ -9,37 +9,33 @@ import {
   ForgotPasswordPage,
 } from '@project/pages';
 
-import { RootLayout, ProtectedRoute, PublicRoute } from '@project/components';
+import { ProtectedRoute, PublicRoute } from '@project/utils';
+
+import { RootLayoutTemplate } from '@project/components';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RootLayout hasFooter />,
-    errorElement: <ErrorPage />,
+    element: <RootLayoutTemplate hasFooter />,
     children: [
       {
         index: true,
         element: <Homepage />,
       },
+    ],
+  },
+  {
+    path: '/auth',
+    errorElement: <ErrorPage />,
+    element: <PublicRoute />,
+    children: [
       {
-        path: 'auth',
-        element: <PublicRoute />,
-        children: [
-          {
-            index: true,
-            element: <AuthPage />,
-          },
-        ],
+        index: true,
+        element: <AuthPage />,
       },
       {
         path: 'forgot-password',
-        element: <PublicRoute />,
-        children: [
-          {
-            index: true,
-            element: <ForgotPasswordPage />,
-          },
-        ],
+        element: <ForgotPasswordPage />,
       },
       {
         path: 'complete-registration',

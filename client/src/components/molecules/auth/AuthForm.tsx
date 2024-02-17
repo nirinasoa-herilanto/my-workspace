@@ -171,7 +171,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
 
         {isLogin && (
           <div className="forgot-password">
-            <Link to={'/forgot-password'}>Forgot password?</Link>
+            <Link to={'forgot-password'}>Forgot password?</Link>
           </div>
         )}
 

@@ -1,8 +1,5 @@
-export { default as ProtectedRoute } from './routes/ProtectedRoute';
-export { default as PublicRoute } from './routes/PublicRoute';
-
 // Layout components
-export { default as RootLayout } from './layouts/RootLayout';
+export { default as RootLayoutTemplate } from './templates/RootLayoutTemplate';
 
 // Atoms components
 export { default as Button } from './atoms/Button';
